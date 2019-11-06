@@ -1,5 +1,5 @@
-var ctx = document.getElementById('myChart').getContext('2d')
-console.log(ctx)
+const ctx = document.getElementById('myChart').getContext('2d')
+
 var chart = new Chart(ctx, {
   type: 'line',
 
