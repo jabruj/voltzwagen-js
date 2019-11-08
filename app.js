@@ -28,10 +28,14 @@ app.get('/query-data', (req, res) => {
     if (err) {
       console.log(err)
     } else {
-      items = data.Items.sort((a, b) => {
+      data = data.Items.sort((a, b) => {
         return a.timestamp > b.timestamp
       })
-      res.send(data.Items)
+      var items = []
+      data.forEach(item => {
+        items.push(item['Payload'])
+      })
+      res.send(items)
     }
   })
 })
