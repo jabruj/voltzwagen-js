@@ -1,3 +1,6 @@
+const server = 'http://localhost:3000/'
+const intervalDelay = 1
+
 const ctx = document.getElementById('myChart').getContext('2d')
 
 var chart = new Chart(ctx, {
@@ -15,3 +18,18 @@ var chart = new Chart(ctx, {
 
   options: {}
 })
+
+this.timer = setInterval(() => {
+  fetchData().then(res => {
+    console.log(res)
+  })
+}, intervalDelay * 1000)
+
+fetchData = async () => {
+  const response = await fetch(server + 'query-data')
+  const body = await response.json()
+  if (response.status !== 200) {
+    throw Error(body.message)
+  }
+  return body
+}
