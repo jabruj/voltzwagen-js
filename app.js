@@ -28,14 +28,10 @@ app.get('/query-data', (req, res) => {
     if (err) {
       console.log(err)
     } else {
-      data = data.Items.sort((a, b) => {
-        return a.timestamp > b.timestamp
-      })
-      var items = []
-      data.forEach(item => {
-        items.push(item['Payload'])
-      })
-      res.send(items)
+      var body = {}
+      body['0'] = formatOutletData('0', data.Items)
+      body['1'] = formatOutletData('1', data.Items)
+      res.send(body)
     }
   })
 })
@@ -43,3 +39,16 @@ app.get('/query-data', (req, res) => {
 app.listen(3000, () => {
   console.log('Listening on port 3000')
 })
+
+////////////////////////////////////////
+formatOutletData = (outletID, data) => {
+  let items = data.filter(item => item.ID == outletID).map(item => item.Payload)
+  var obj = {}
+  items.forEach(item => {
+    obj[item.timestamp] = {}
+    obj[item.timestamp]['current'] = item['current']
+    obj[item.timestamp]['voltage'] = item['voltage']
+    obj[item.timestamp]['temperature'] = item['temperature']
+  })
+  return obj
+}

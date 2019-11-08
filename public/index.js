@@ -1,5 +1,5 @@
 const server = 'http://localhost:3000/'
-const intervalDelay = 1
+const intervalDelay = 2
 
 const ctx = document.getElementById('myChart').getContext('2d')
 
@@ -21,7 +21,7 @@ var chart = new Chart(ctx, {
 
 this.timer = setInterval(() => {
   fetchData().then(res => {
-    console.log(res)
+    updateChart(res)
   })
 }, intervalDelay * 1000)
 
@@ -32,4 +32,8 @@ fetchData = async () => {
     throw Error(body.message)
   }
   return body
+}
+
+updateChart = data => {
+  console.log(data)
 }
