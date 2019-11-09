@@ -43,12 +43,13 @@ app.listen(3000, () => {
 ////////////////////////////////////////
 formatOutletData = (outletID, data) => {
   let items = data.filter(item => item.ID == outletID).map(item => item.Payload)
-  var obj = {}
-  items.forEach(item => {
-    obj[item.timestamp] = {}
-    obj[item.timestamp]['current'] = item['current']
-    obj[item.timestamp]['voltage'] = item['voltage']
-    obj[item.timestamp]['temperature'] = item['temperature']
-  })
-  return obj
+  // var obj = {}
+  // items.forEach(item => {
+  //   obj[item.timestamp] = {}
+  //   obj[item.timestamp]['current'] = item['current']
+  //   obj[item.timestamp]['voltage'] = item['voltage']
+  //   obj[item.timestamp]['temperature'] = item['temperature']
+  // })
+  // return obj
+  return items
 }
