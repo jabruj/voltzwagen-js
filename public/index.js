@@ -53,14 +53,16 @@ updateChart = data => {
   let power1 = getPower(data[1])
 
   chart0.data.labels.push('|')
-  chart0.data.datasets.forEach(dataset => {
-    dataset.data.push(Math.random() * 10)
-  })
+  // chart0.data.datasets.forEach(dataset => {
+  //   dataset.data.push(Math.random() * 10)
+  // })
+  chart0.data.datasets[0].data = power0
 
   chart1.data.labels.push('|')
-  chart1.data.datasets.forEach(dataset => {
-    dataset.data.push(Math.random() * 10)
-  })
+  // chart1.data.datasets.forEach(dataset => {
+  //   dataset.data.push(Math.random() * 10)
+  // })
+  chart1.data.datasets[0].data = power1
 
   truncateData(chart0)
   truncateData(chart1)
