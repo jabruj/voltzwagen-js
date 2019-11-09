@@ -49,6 +49,9 @@ fetchData = async () => {
 }
 
 updateChart = data => {
+  let power0 = getPower(data[0])
+  let power1 = getPower(data[1])
+
   chart0.data.labels.push('|')
   chart0.data.datasets.forEach(dataset => {
     dataset.data.push(Math.random() * 10)
@@ -75,6 +78,14 @@ truncateData = chart => {
       dataset.data = dataset.data.slice(dataset.data.length - realTimeWindow)
     })
   }
+}
+
+getPower = outletData => {
+  let current = outletData.map(item => item.current)
+  let voltage = outletData.map(item => item.voltage)
+  let temp = outletData.map(item => item.temperature)
+  let power = current.map((n, i) => n * voltage[i])
+  return power
 }
 
 ////////////////////////////////////////
