@@ -12,7 +12,7 @@ var chart0 = new Chart(ctx0, {
   data: {
     labels: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => '|'),
     datasets: [{
-      label: 'Real-TIme Power Consumption',
+      label: 'Real-TIme Power Consumption for Outlet 0',
       backgroundColor: 'rgb(200, 200, 200)',
       borderColor: 'rgb(255, 99, 132)',
       data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
@@ -28,7 +28,7 @@ var chart1 = new Chart(ctx1, {
   data: {
     labels: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => '|'),
     datasets: [{
-      label: 'Real-TIme Power Consumption',
+      label: 'Real-TIme Power Consumption for Outlet 1',
       backgroundColor: 'rgb(200, 200, 200)',
       borderColor: 'rgb(255, 99, 132)',
       data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
@@ -59,26 +59,22 @@ updateChart = data => {
     dataset.data.push(Math.random() * 10)
   })
 
-  if (chart0.data.labels.length > realTimeWindow) {
-    chart0.data.labels = chart0.data.labels.slice(
-      chart0.data.labels.length - realTimeWindow)
-
-    chart0.data.datasets.forEach(dataset => {
-      dataset.data = dataset.data.slice(dataset.data.length - realTimeWindow)
-    })
-  }
-
-  if (chart1.data.labels.length > realTimeWindow) {
-    chart1.data.labels = chart1.data.labels.slice(
-      chart1.data.labels.length - realTimeWindow)
-
-    chart1.data.datasets.forEach(dataset => {
-      dataset.data = dataset.data.slice(dataset.data.length - realTimeWindow)
-    })
-  }
+  truncateData(chart0)
+  truncateData(chart1)
 
   chart0.update()
   chart1.update()
+}
+
+truncateData = chart => {
+  if (chart.data.labels.length > realTimeWindow) {
+    chart.data.labels = chart.data.labels.slice(
+      chart.data.labels.length - realTimeWindow)
+
+    chart.data.datasets.forEach(dataset => {
+      dataset.data = dataset.data.slice(dataset.data.length - realTimeWindow)
+    })
+  }
 }
 
 ////////////////////////////////////////
