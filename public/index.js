@@ -4,12 +4,6 @@ const intervalDelay = 1
 const realTimeWindow = 20
 
 ////////// Power Charts //////////
-const powerChartDatasets = [{
-  label: 'Real-Time Power Consumption',
-  backgroundColor: 'rgb(200, 200, 200)',
-  borderColor: 'rgb(255, 99, 132)',
-  data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
-}]
 const powerChartLabels = new Array(realTimeWindow).fill().map(
   (_, i) => i).map(_ => '|')
 
@@ -18,7 +12,12 @@ var ctx1 = document.getElementById('powerChart1').getContext('2d')
 var powerChart0 = new Chart(ctx0, {
   type: 'line',
   data: {
-    datasets: powerChartDatasets,
+    datasets: [{
+      label: 'Real-Time Power Consumption',
+      backgroundColor: 'rgb(200, 200, 200)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
+    }],
     labels: powerChartLabels
   },
   options: {
@@ -31,7 +30,12 @@ var powerChart0 = new Chart(ctx0, {
 var powerChart1 = new Chart(ctx1, {
   type: 'line',
   data: {
-    datasets: powerChartDatasets,
+    datasets: [{
+      label: 'Real-Time Power Consumption',
+      backgroundColor: 'rgb(200, 200, 200)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
+    }],
     labels: powerChartLabels
   },
   options: {
@@ -43,10 +47,6 @@ var powerChart1 = new Chart(ctx1, {
 })
 
 ////////// kWh Charts //////////
-const kWhChartDatasets = [{
-  data: [100],
-  backgroundColor: 'rgba(255, 0, 0, 0.1)',
-}]
 const kWhChartOptions = {
   cutoutPercentage: 75,
   rotation: Math.PI,
@@ -58,7 +58,10 @@ ctx1 = document.getElementById('kWhChart1').getContext('2d')
 var kWhChart0 = new Chart(ctx0, {
   type: 'doughnut',
   data: {
-    datasets: kWhChartDatasets,
+    datasets: [{
+      data: [100],
+      backgroundColor: 'rgba(255, 0, 0, 0.1)',
+    }],
     labels: ['Outlet 0 kWh']
   },
   options: kWhChartOptions
@@ -66,7 +69,10 @@ var kWhChart0 = new Chart(ctx0, {
 var kWhChart1 = new Chart(ctx1, {
   type: 'doughnut',
   data: {
-    datasets: kWhChartDatasets,
+    datasets: [{
+      data: [100],
+      backgroundColor: 'rgba(255, 0, 0, 0.1)',
+    }],
     labels: ['Outlet 1 kWh']
   },
   options: kWhChartOptions
@@ -85,17 +91,18 @@ fetchData = async () => {
 updateChart = data => {
   let power0 = getPower(data[0])
   let power1 = getPower(data[1])
+
   powerChart0.data.labels.push('|')
+  powerChart0.data.datasets[0].data = power0
   // powerChart0.data.datasets.forEach(dataset => {
   //   dataset.data.push(Math.random() * 10)
   // })
-  powerChart0.data.datasets[0].data = power0
 
   powerChart1.data.labels.push('|')
+  powerChart1.data.datasets[0].data = power1
   // powerChart1.data.datasets.forEach(dataset => {
   //   dataset.data.push(Math.random() * 10)
   // })
-  powerChart1.data.datasets[0].data = power1
 
   truncateData(powerChart0)
   truncateData(powerChart1)
@@ -134,11 +141,11 @@ getkWh = power => {
 }
 
 ////////////////////////////////////////
-fetchData().then(res => {
-  updateChart(res)
-})
-// this.timer = setInterval(() => {
-//   fetchData().then(res => {
-//     updateChart(res)
-//   })
-// }, intervalDelay * 1000)
+// fetchData().then(res => {
+//   updateChart(res)
+// })
+this.timer = setInterval(() => {
+  fetchData().then(res => {
+    updateChart(res)
+  })
+}, intervalDelay * 1000)
