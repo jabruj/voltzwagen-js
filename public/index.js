@@ -3,69 +3,73 @@ const intervalDelay = 1
 
 const realTimeWindow = 20
 
-////////////////////////////////////////
-var ctx0 = document.getElementById('power0').getContext('2d')
-var chart0 = new Chart(ctx0, {
+////////// Power Charts //////////
+const powerChartDatasets = [{
+  label: 'Real-Time Power Consumption',
+  backgroundColor: 'rgb(200, 200, 200)',
+  borderColor: 'rgb(255, 99, 132)',
+  data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
+}]
+const powerChartLabels = new Array(realTimeWindow).fill().map(
+  (_, i) => i).map(_ => '|')
+
+var ctx0 = document.getElementById('powerChart0').getContext('2d')
+var ctx1 = document.getElementById('powerChart1').getContext('2d')
+var powerChart0 = new Chart(ctx0, {
   type: 'line',
-
   data: {
-    labels: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => '|'),
-    datasets: [{
-      label: 'Real-TIme Power Consumption for Outlet 0',
-      backgroundColor: 'rgb(200, 200, 200)',
-      borderColor: 'rgb(255, 99, 132)',
-      data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
-    }]
+    datasets: powerChartDatasets,
+    labels: powerChartLabels
   },
-
-  options: {}
+  options: {
+    title: {
+      display: true,
+      text: 'Outlet 0'
+    }
+  }
 })
-ctx0 = document.getElementById('kWh0').getContext('2d')
+var powerChart1 = new Chart(ctx1, {
+  type: 'line',
+  data: {
+    datasets: powerChartDatasets,
+    labels: powerChartLabels
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Outlet 1'
+    }
+  }
+})
+
+////////// kWh Charts //////////
+const kWhChartDatasets = [{
+  data: [100],
+  backgroundColor: 'rgba(255, 0, 0, 0.1)',
+}]
+const kWhChartOptions = {
+  cutoutPercentage: 75,
+  rotation: Math.PI,
+  circumference: Math.PI
+}
+
+ctx0 = document.getElementById('kWhChart0').getContext('2d')
+ctx1 = document.getElementById('kWhChart1').getContext('2d')
 var kWhChart0 = new Chart(ctx0, {
   type: 'doughnut',
   data: {
-    datasets: [{
-      data: [100]
-    }],
+    datasets: kWhChartDatasets,
     labels: ['Outlet 0 kWh']
   },
-  options: {
-    cutoutPercentage: 75,
-    rotation: Math.PI,
-    circumference: Math.PI,
-  }
+  options: kWhChartOptions
 })
-
-var ctx1 = document.getElementById('power1').getContext('2d')
-var chart1 = new Chart(ctx1, {
-  type: 'line',
-
-  data: {
-    labels: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => '|'),
-    datasets: [{
-      label: 'Real-TIme Power Consumption for Outlet 1',
-      backgroundColor: 'rgb(200, 200, 200)',
-      borderColor: 'rgb(255, 99, 132)',
-      data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
-    }]
-  },
-
-  options: {}
-})
-ctx1 = document.getElementById('kWh1').getContext('2d')
 var kWhChart1 = new Chart(ctx1, {
   type: 'doughnut',
   data: {
-    datasets: [{
-      data: [100]
-    }],
+    datasets: kWhChartDatasets,
     labels: ['Outlet 1 kWh']
   },
-  options: {
-    cutoutPercentage: 75,
-    rotation: Math.PI,
-    circumference: Math.PI,
-  }
+  options: kWhChartOptions
 })
 
 ////////////////////////////////////////
@@ -81,22 +85,22 @@ fetchData = async () => {
 updateChart = data => {
   let power0 = getPower(data[0])
   let power1 = getPower(data[1])
-  chart0.data.labels.push('|')
-  // chart0.data.datasets.forEach(dataset => {
+  powerChart0.data.labels.push('|')
+  // powerChart0.data.datasets.forEach(dataset => {
   //   dataset.data.push(Math.random() * 10)
   // })
-  chart0.data.datasets[0].data = power0
+  powerChart0.data.datasets[0].data = power0
 
-  chart1.data.labels.push('|')
-  // chart1.data.datasets.forEach(dataset => {
+  powerChart1.data.labels.push('|')
+  // powerChart1.data.datasets.forEach(dataset => {
   //   dataset.data.push(Math.random() * 10)
   // })
-  chart1.data.datasets[0].data = power1
+  powerChart1.data.datasets[0].data = power1
 
-  truncateData(chart0)
-  truncateData(chart1)
-  chart0.update()
-  chart1.update()
+  truncateData(powerChart0)
+  truncateData(powerChart1)
+  powerChart0.update()
+  powerChart1.update()
 
   let kWh0 = getkWh(power0)
   let kWh1 = getkWh(power1)
