@@ -1,6 +1,5 @@
 const server = 'http://localhost:3000/'
 const intervalDelay = 1
-
 const realTimeWindow = 20
 
 ////////// Power Charts //////////
@@ -9,6 +8,7 @@ const powerChartLabels = new Array(realTimeWindow).fill().map(
 
 var ctx0 = document.getElementById('powerChart0').getContext('2d')
 var ctx1 = document.getElementById('powerChart1').getContext('2d')
+
 var powerChart0 = new Chart(ctx0, {
   type: 'line',
   data: {
@@ -55,6 +55,7 @@ const kWhChartOptions = {
 
 ctx0 = document.getElementById('kWhChart0').getContext('2d')
 ctx1 = document.getElementById('kWhChart1').getContext('2d')
+
 var kWhChart0 = new Chart(ctx0, {
   type: 'doughnut',
   data: {
@@ -147,7 +148,18 @@ updatekWhLabel = (ctx, kWh) => {
   ctx.fillText(kWh + ' kWh', 100, 120)
 }
 
+onButtonClicked = () => {
+  console.log('onButtonClicked')
+}
+
+offButtonClicked = () => {
+  console.log('offButtonClicked')
+}
+
 ////////////////////////////////////////
+document.getElementById('onButton').onclick = onButtonClicked
+document.getElementById('offButton').onclick = offButtonClicked
+
 // fetchData().then(res => {
 //   updateChart(res)
 // })
