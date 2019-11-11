@@ -60,7 +60,7 @@ var kWhChart0 = new Chart(ctx0, {
   data: {
     datasets: [{
       data: [100],
-      backgroundColor: 'rgba(255, 0, 0, 0.1)',
+      backgroundColor: 'rgba(0, 255, 0, 0.5)',
     }],
     labels: ['Outlet 0 kWh']
   },
@@ -71,7 +71,7 @@ var kWhChart1 = new Chart(ctx1, {
   data: {
     datasets: [{
       data: [100],
-      backgroundColor: 'rgba(255, 0, 0, 0.1)',
+      backgroundColor: 'rgba(0, 255, 0, 0.5)',
     }],
     labels: ['Outlet 1 kWh']
   },
@@ -111,8 +111,10 @@ updateChart = data => {
 
   let kWh0 = getkWh(power0)
   let kWh1 = getkWh(power1)
-  document.getElementById('kWh0Label').innerText = kWh0
-  document.getElementById('kWh1Label').innerText = kWh1
+  kWhChart0.data.datasets[0].data = [kWh0]
+  kWhChart1.data.datasets[0].data = [kWh1]
+  updatekWhLabel(ctx0, kWh0)
+  updatekWhLabel(ctx1, kWh1)
 }
 
 truncateData = chart => {
@@ -138,6 +140,11 @@ getkWh = power => {
   var kWh = (power.reduce((a, b) => a + b) / power.length)
               / 1000 * (power.length / 3600)
   return Math.round(100000 * kWh) / 100000
+}
+
+updatekWhLabel = (ctx, kWh) => {
+  ctx.font = '26px Arial'
+  ctx.fillText(kWh + ' kWh', 100, 120)
 }
 
 ////////////////////////////////////////
