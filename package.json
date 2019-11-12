@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/aninamu/voltzwagen-js#readme",
   "dependencies": {
-    "aws-sdk": "^2.565.0",
+    "aws-mqtt": "^1.0.0",
+    "aws-sdk": "^2.569.0",
     "chart.js": "^2.9.2",
     "express": "^4.17.1"
   }

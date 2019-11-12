@@ -3,6 +3,8 @@ const app = express()
 const path = require('path')
 
 const AWS = require('aws-sdk')
+const AWSMqttClient = require('aws-mqtt/lib/NodeClient')
+
 AWS.config.update({
   region: 'us-east-1',
   endpoint: 'https://dynamodb.us-east-1.amazonaws.com',
@@ -17,6 +19,20 @@ const dbParams = {
   },
 }
 
+const mqttClient = new AWSMqttClient({
+  region: AWS.config.region,
+  credentials: AWS.config.credentials,
+  endpoint: 'a1qz7xag1ojn3f-ats.iot.us-east-1.amazonaws.com',
+  clientId: 'mqtt-client-' + (Math.floor((Math.random() * 100000) + 1)),
+  will: {
+    topic: 'WillMsg',
+    payload: 'Connection Closed abnormally..!',
+    qos: 0,
+    retain: false
+  }
+})
+
+////////////////////////////////////////
 app.use('/public', express.static(__dirname + '/public'))
 
 app.get('/', function (req, res) {
