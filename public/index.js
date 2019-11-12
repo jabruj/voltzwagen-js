@@ -6,27 +6,9 @@ const realTimeWindow = 20
 const powerChartLabels = new Array(realTimeWindow).fill().map(
   (_, i) => i).map(_ => '|')
 
-var ctx0 = document.getElementById('powerChart0').getContext('2d')
 var ctx1 = document.getElementById('powerChart1').getContext('2d')
+var ctx2 = document.getElementById('powerChart2').getContext('2d')
 
-var powerChart0 = new Chart(ctx0, {
-  type: 'line',
-  data: {
-    datasets: [{
-      label: 'Real-Time Power Consumption',
-      backgroundColor: 'rgb(200, 200, 200)',
-      borderColor: 'rgb(255, 99, 132)',
-      data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
-    }],
-    labels: powerChartLabels
-  },
-  options: {
-    title: {
-      display: true,
-      text: 'Outlet 0'
-    }
-  }
-})
 var powerChart1 = new Chart(ctx1, {
   type: 'line',
   data: {
@@ -45,6 +27,24 @@ var powerChart1 = new Chart(ctx1, {
     }
   }
 })
+var powerChart2 = new Chart(ctx2, {
+  type: 'line',
+  data: {
+    datasets: [{
+      label: 'Real-Time Power Consumption',
+      backgroundColor: 'rgb(200, 200, 200)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
+    }],
+    labels: powerChartLabels
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Outlet 2'
+    }
+  }
+})
 
 ////////// kWh Charts //////////
 const kWhChartOptions = {
@@ -53,20 +53,9 @@ const kWhChartOptions = {
   circumference: Math.PI
 }
 
-ctx0 = document.getElementById('kWhChart0').getContext('2d')
 ctx1 = document.getElementById('kWhChart1').getContext('2d')
+ctx2 = document.getElementById('kWhChart2').getContext('2d')
 
-var kWhChart0 = new Chart(ctx0, {
-  type: 'doughnut',
-  data: {
-    datasets: [{
-      data: [100],
-      backgroundColor: 'rgba(0, 255, 0, 0.5)',
-    }],
-    labels: ['Outlet 0 kWh']
-  },
-  options: kWhChartOptions
-})
 var kWhChart1 = new Chart(ctx1, {
   type: 'doughnut',
   data: {
@@ -75,6 +64,17 @@ var kWhChart1 = new Chart(ctx1, {
       backgroundColor: 'rgba(0, 255, 0, 0.5)',
     }],
     labels: ['Outlet 1 kWh']
+  },
+  options: kWhChartOptions
+})
+var kWhChart2 = new Chart(ctx2, {
+  type: 'doughnut',
+  data: {
+    datasets: [{
+      data: [100],
+      backgroundColor: 'rgba(0, 255, 0, 0.5)',
+    }],
+    labels: ['Outlet 2 kWh']
   },
   options: kWhChartOptions
 })
@@ -90,32 +90,32 @@ fetchData = async () => {
 }
 
 updateChart = data => {
-  let power0 = getPower(data[0])
-  let power1 = getPower(data[1])
+  let power1 = getPower(data[0])
+  let power2 = getPower(data[1])
 
-  powerChart0.data.labels.push('|')
-  powerChart0.data.datasets[0].data = power0
+  powerChart1.data.labels.push('|')
+  powerChart1.data.datasets[0].data = power1
   // powerChart0.data.datasets.forEach(dataset => {
   //   dataset.data.push(Math.random() * 10)
   // })
 
-  powerChart1.data.labels.push('|')
-  powerChart1.data.datasets[0].data = power1
+  powerChart2.data.labels.push('|')
+  powerChart2.data.datasets[0].data = power2
   // powerChart1.data.datasets.forEach(dataset => {
   //   dataset.data.push(Math.random() * 10)
   // })
 
-  truncateData(powerChart0)
   truncateData(powerChart1)
-  powerChart0.update()
+  truncateData(powerChart2)
   powerChart1.update()
+  powerChart2.update()
 
-  let kWh0 = getkWh(power0)
   let kWh1 = getkWh(power1)
-  kWhChart0.data.datasets[0].data = [kWh0]
+  let kWh2 = getkWh(power2)
   kWhChart1.data.datasets[0].data = [kWh1]
-  updatekWhLabel(ctx0, kWh0)
+  kWhChart2.data.datasets[0].data = [kWh2]
   updatekWhLabel(ctx1, kWh1)
+  updatekWhLabel(ctx2, kWh2)
 }
 
 truncateData = chart => {
@@ -152,10 +152,10 @@ sendCommand = async(event) => {
   var outlet = ''
   var command = ''
 
-  if (parseInt(event.srcElement.id[event.srcElement.id.length - 1]) == 0) {
-    outlet = '0'
-  } else {
+  if (parseInt(event.srcElement.id[event.srcElement.id.length - 1]) == 1) {
     outlet = '1'
+  } else {
+    outlet = '2'
   }
 
   if (event.srcElement.id.includes('onButton')) {
@@ -169,10 +169,10 @@ sendCommand = async(event) => {
 }
 
 ////////////////////////////////////////
-document.getElementById('onButton0').onclick = sendCommand
 document.getElementById('onButton1').onclick = sendCommand
-document.getElementById('offButton0').onclick = sendCommand
+document.getElementById('onButton2').onclick = sendCommand
 document.getElementById('offButton1').onclick = sendCommand
+document.getElementById('offButton2').onclick = sendCommand
 
 // fetchData().then(res => {
 //   updateChart(res)
