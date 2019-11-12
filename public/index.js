@@ -148,17 +148,31 @@ updatekWhLabel = (ctx, kWh) => {
   ctx.fillText(kWh + ' kWh', 100, 120)
 }
 
-onButtonClicked = () => {
-  console.log('onButtonClicked')
-}
+sendCommand = async(event) => {
+  var outlet = ''
+  var command = ''
 
-offButtonClicked = () => {
-  console.log('offButtonClicked')
+  if (parseInt(event.srcElement.id[event.srcElement.id.length - 1]) == 0) {
+    outlet = '0'
+  } else {
+    outlet = '1'
+  }
+
+  if (event.srcElement.id.includes('onButton')) {
+    command = '1'
+  } else {
+    command = '0'
+  }
+
+  const query = '/?outlet=' + outlet + '&command=' + command
+  await fetch(server + 'send-command' + query)
 }
 
 ////////////////////////////////////////
-document.getElementById('onButton').onclick = onButtonClicked
-document.getElementById('offButton').onclick = offButtonClicked
+document.getElementById('onButton0').onclick = sendCommand
+document.getElementById('onButton1').onclick = sendCommand
+document.getElementById('offButton0').onclick = sendCommand
+document.getElementById('offButton1').onclick = sendCommand
 
 // fetchData().then(res => {
 //   updateChart(res)

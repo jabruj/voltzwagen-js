@@ -3,7 +3,7 @@ const app = express()
 const path = require('path')
 
 const AWS = require('aws-sdk')
-const AWSMqttClient = require('aws-mqtt/lib/NodeClient')
+const publishMessage = require('aws-mqtt/lib/publishMessage')
 
 AWS.config.update({
   region: 'us-east-1',
@@ -18,19 +18,6 @@ const dbParams = {
     '#ts': 'Timestamp',
   },
 }
-
-const mqttClient = new AWSMqttClient({
-  region: AWS.config.region,
-  credentials: AWS.config.credentials,
-  endpoint: 'a1qz7xag1ojn3f-ats.iot.us-east-1.amazonaws.com',
-  clientId: 'mqtt-client-' + (Math.floor((Math.random() * 100000) + 1)),
-  will: {
-    topic: 'WillMsg',
-    payload: 'Connection Closed abnormally..!',
-    qos: 0,
-    retain: false
-  }
-})
 
 ////////////////////////////////////////
 app.use('/public', express.static(__dirname + '/public'))
@@ -50,6 +37,21 @@ app.get('/query-data', (req, res) => {
       res.send(body)
     }
   })
+})
+
+app.get('/send-command', function (req, res) {
+  const endpoint = 'a1qz7xag1ojn3f-ats.iot.us-east-1.amazonaws.com'
+  const topic = '$aws/things/VoltzwagenThing/shadow/get'
+  const message = '' + req.query.outlet + req.query.command
+  publishMessage(
+    {
+      region: AWS.config.region,
+      endpoint: endpoint,
+      credentials: AWS.config.credentials,
+    },
+    topic,
+    message
+  ).then(res.send(message))
 })
 
 app.listen(3000, () => {
