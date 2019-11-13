@@ -1,7 +1,8 @@
 const server = 'http://localhost:3000/'
 const intervalDelay = 1
-const realTimeWindow = 20
+const realTimeWindow = 20   // Number of readings for real-time chart
 const pricePerkWh = 0.145   // 14.5 cents per kWh
+const historyWindow = 14    // Number of days for history chart
 
 ////////// Power Charts //////////
 const powerChartLabels = new Array(realTimeWindow).fill().map(
@@ -111,6 +112,43 @@ var priceChart2 = new Chart(priceCtx2, {
     labels: ['Outlet 2 Cost']
   },
   options: priceChartOptions
+})
+
+////////// History Charts //////////
+const historyChartLabels = new Array(historyWindow).fill().map(
+  (_, i) => i).map(_ => '|')
+
+const historyCtx1 = document.getElementById('historyChart1').getContext('2d')
+const historyCtx2 = document.getElementById('historyChart2').getContext('2d')
+
+var historyChart1 = new Chart(historyCtx1, {
+  type: 'bar',
+  data: {
+    datasets: [{
+      label: 'Daily Power Consumption',
+      backgroundColor: 'rgb(200, 200, 200)',
+      data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 1),
+    }],
+    labels: historyChartLabels
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Outlet 1'
+    }
+  }
+})
+var historyChart2 = new Chart(historyCtx2, {
+  type: 'bar',
+  data: {
+    datasets: [{
+      label: 'Daily Power Consumption',
+      backgroundColor: 'rgb(200, 200, 200)',
+      data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 1),
+    }],
+    labels: historyChartLabels
+  },
+  options: {}
 })
 
 ////////////////////////////////////////
