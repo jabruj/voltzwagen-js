@@ -8,6 +8,26 @@
   text-transform: uppercase;
 }
 
+.badgeDiv {
+  margin: 4px;
+  padding: 12px 0 12px 0;
+}
+
+.badge {
+  border: solid #dedede 0.5px;
+  border-radius: 60%;
+  padding: 12px;
+}
+
+.onBadge {
+  background-color: rgb(0, 255, 0);
+}
+
+.offBadge {
+  background-color: rgb(40, 40, 40);
+  color: white;
+}
+
 .btn {
   border: solid blue 1px;
   border-radius: 25%;
@@ -15,9 +35,9 @@
 }
 
 .onButton {
-  background-color: rgba(0, 255, 0, 0.6)
+  background-color: rgba(0, 255, 0, 0.6);
 }
 
 .offButton {
-  background-color: rgba(255, 0, 0, 0.6)
+  background-color: rgba(255, 0, 0, 0.6);
 }

@@ -180,7 +180,7 @@ getkWh = power => {
 
 getPrice = kWh => {
   var price = pricePerkWh * kWh
-  return Math.round(100 * price) / 100
+  return Math.round(1000 * price) / 1000
 }
 
 updatekWhLabel = (ctx, kWh) => {
