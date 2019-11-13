@@ -214,10 +214,11 @@ sendCommand = async(event) => {
 }
 
 ////////////////////////////////////////
-document.getElementById('onButton1').onclick = sendCommand
-document.getElementById('onButton2').onclick = sendCommand
-document.getElementById('offButton1').onclick = sendCommand
-document.getElementById('offButton2').onclick = sendCommand
+document.querySelectorAll('button').forEach(button => {
+  if (button.id.includes('onButton') || button.id.includes('offButton')) {
+    button.onclick = sendCommand
+  }
+})
 
 // fetchData().then(res => {
 //   updateChart(res)

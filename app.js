@@ -52,6 +52,7 @@ app.get('/send-command', function (req, res) {
     topic,
     message
   ).then(res.send(message))
+  console.log(message)
 })
 
 app.listen(3000, () => {
