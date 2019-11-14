@@ -19,10 +19,15 @@ const dbParams = {
   },
 }
 
+var outletPowerStates = {
+  '1': '1',
+  '2': '1'
+}
+
 ////////////////////////////////////////
 app.use('/public', express.static(__dirname + '/public'))
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'))
 })
 
@@ -39,7 +44,7 @@ app.get('/query-data', (req, res) => {
   })
 })
 
-app.get('/send-command', function (req, res) {
+app.get('/send-command', (req, res) => {
   const endpoint = 'a1qz7xag1ojn3f-ats.iot.us-east-1.amazonaws.com'
   const topic = '$aws/things/VoltzwagenThing/shadow/get'
   const message = '' + req.query.outlet + req.query.command
@@ -51,8 +56,16 @@ app.get('/send-command', function (req, res) {
     },
     topic,
     message
-  ).then(res.send(message))
-  console.log(message)
+  ).then(() => {
+    outletPowerStates[req.query.outlet] = req.query.command
+    console.log(message)
+    console.log(outletPowerStates)
+    res.send(message)
+  })
+})
+
+app.get('/outlet-power-states', (req, res) => {
+  res.send(outletPowerStates)
 })
 
 app.listen(3000, () => {
