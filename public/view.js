@@ -33,9 +33,7 @@ class CurrentView extends React.Component {
       )
     } else {
       return (
-        <div>
-          Main
-        </div>
+        <div></div>
       )
     }
   }
