@@ -23,6 +23,10 @@ class Outlet extends React.Component {
         power: 'on'
       })
     }
+
+    let command = this.state.power === 'on' ? '0' : '1'
+    const query = '/?outlet=' + this.state.outlet + '&command=' + command
+    fetch(server + 'send-command' + query)
   }
 
   render() {
