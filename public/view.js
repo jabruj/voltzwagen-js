@@ -4,6 +4,22 @@ class CurrentView extends React.Component {
     this.state = { 
       view: 'main'
     }
+
+    document.querySelector('#menuMain').onclick = () => {
+      this.setState({
+        view: 'main'
+      })
+    }
+    document.querySelector('#menuOutlet1').onclick = () => {
+      this.setState({
+        view: 'outlet1'
+      })
+    }
+    document.querySelector('#menuOutlet2').onclick = () => {
+      this.setState({
+        view: 'outlet2'
+      })
+    }
   }
 
   render() {
