@@ -8,6 +8,20 @@
   <link rel="stylesheet" href="/public/style.css">
 </head>
 <body>
+  <div id="menu">
+    <div id="menuMain">
+      <span>Main</span>
+    </div>
+
+    <div id="menuOutlets">
+      <span id="menuOutlet1">Outlet 1</span>
+      <span>|</span>
+      <span id="menuOutlet2">Outlet 2</span>
+    </div>
+  </div>
+
+  <div id="app"></div>
+
   <div class="outlet" id="outlet1">
     <div class="buttonGroup" id="powerButton1"></div>
     <canvas id="powerChart1"></canvas>
@@ -30,5 +44,6 @@
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
   <script src="/public/index.js"></script>
   <script type="text/babel" src="/public/buttons.js"></script>
+  <script type="text/babel" src="/public/view.js"></script>
 </body>
 </html>
