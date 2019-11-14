@@ -25,15 +25,11 @@ class CurrentView extends React.Component {
   render() {
     if (this.state.view === 'outlet1') {
       return (
-        <div>
-          Outlet1
-        </div>
+        <Outlet outlet='1' />
       )
     } else if (this.state.view === 'outlet2') {
       return (
-        <div>
-          Outlet2
-        </div>
+        <Outlet outlet='2' />
       )
     } else {
       return (
@@ -45,4 +41,4 @@ class CurrentView extends React.Component {
   }
 }
 
-ReactDOM.render(<CurrentView />, document.querySelector('#app'))
+ReactDOM.render(<CurrentView />, document.querySelector('#view'))
