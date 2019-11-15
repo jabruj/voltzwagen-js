@@ -13,6 +13,14 @@ class Outlet extends React.Component {
     }
   }
 
+  componentDidMount() {
+    drawCharts(this.state.outlet)
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    drawCharts(this.state.outlet)
+  }
+
   togglePower = event => {
     if (this.state.power === 'on') {
       this.setState({
