@@ -3,7 +3,8 @@ class Outlet extends React.Component {
     super(props)
     this.state = {
       outlet: props.outlet,
-      power: 'on'
+      power: 'on',
+      interval: null
     }
   }
 
@@ -15,10 +16,20 @@ class Outlet extends React.Component {
 
   componentDidMount() {
     drawCharts(this.state.outlet)
+    this.state.interval = setInterval(() => {
+      fetchData().then(res => {
+        console.log(res[this.state.outlet])
+        // updateChart(res)
+      })
+    }, intervalDelay * 1000)
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     drawCharts(this.state.outlet)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.interval)
   }
 
   togglePower = event => {
