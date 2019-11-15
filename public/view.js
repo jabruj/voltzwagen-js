@@ -25,11 +25,11 @@ class CurrentView extends React.Component {
   render() {
     if (this.state.view === 'outlet1') {
       return (
-        <Outlet outlet='1' />
+        <Outlet outlet='1' key='1' />
       )
     } else if (this.state.view === 'outlet2') {
       return (
-        <Outlet outlet='2' />
+        <Outlet outlet='2' key='2' />
       )
     } else {
       return (

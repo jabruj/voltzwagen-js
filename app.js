@@ -37,8 +37,8 @@ app.get('/query-data', (req, res) => {
       console.log(err)
     } else {
       var body = {}
-      body['0'] = formatOutletData('1', data.Items)
-      body['1'] = formatOutletData('2', data.Items)
+      body['1'] = formatOutletData('1', data.Items)
+      body['2'] = formatOutletData('2', data.Items)
       res.send(body)
     }
   })
