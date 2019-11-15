@@ -143,6 +143,15 @@ fetchData = async () => {
   return body
 }
 
+getOutletPowerStates = async () => {
+  const response = await fetch(server + 'outlet-power-states')
+  const body = await response.json()
+  if (response.status !== 200) {
+    throw Error(body.message)
+  }
+  return body
+}
+
 updateCharts = (charts, data) => {
   let powerChart = charts['powerChart']
   let kWhCtx = charts['kWhCtx']

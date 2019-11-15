@@ -3,18 +3,18 @@ class Outlet extends React.Component {
     super(props)
     this.state = {
       outlet: props.outlet,
-      power: 'on',
+      power: null,
       interval: null
     }
   }
 
-  static getDerivedStateFromProps(props, state) {
-    return {
-      outlet: props.outlet,
-    }
-  }
-
   componentDidMount() {
+    getOutletPowerStates().then(res => {
+      this.setState({
+        power: res[this.state.outlet]
+      })
+    })
+
     let charts = drawCharts(this.state.outlet)
     fetchData().then(res => {
       updateCharts(charts, res[this.state.outlet])
@@ -35,18 +35,18 @@ class Outlet extends React.Component {
   }
 
   togglePower = event => {
-    if (this.state.power === 'on') {
+    if (this.state.power === '1') {
       this.setState({
-        power: 'off'
+        power: '0'
       })
     } else {
       this.setState({
-        power: 'on'
+        power: '1'
       })
     }
 
-    let command = this.state.power === 'on' ? '0' : '1'
-    const query = '/?outlet=' + this.state.outlet + '&command=' + command
+    let command = this.state.power === '1' ? '0' : '1'
+    let query = '/?outlet=' + this.state.outlet + '&command=' + command
     fetch(server + 'send-command' + query)
   }
 

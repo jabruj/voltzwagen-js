@@ -32,6 +32,10 @@
   color: white;
 }
 
+.hiddenBadge {
+  visibility: hidden;
+}
+
 .btn {
   border: solid blue 1px;
   border-radius: 25%;
@@ -44,4 +48,8 @@
 
 .offButton {
   background-color: rgba(255, 0, 0, 0.6);
+}
+
+.hiddenButton {
+  visibility: hidden;
 }
