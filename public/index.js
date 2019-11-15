@@ -4,22 +4,13 @@ const realTimeWindow = 20   // Number of readings for real-time chart
 const pricePerkWh = 0.145   // 14.5 cents per kWh
 const historyWindow = 14    // Number of days for history chart
 
-
-////////////////////////////////////////
-drawCharts = i => {
-  drawPowerCharts(i)
-  drawkWhCharts(i)
-  drawPriceCharts(i)
-  drawHistoryCharts(i)
-}
-
 ////////// Power Charts //////////
 const powerChartLabels = new Array(realTimeWindow).fill().map(
   (_, i) => i).map(_ => '|')
 
 drawPowerCharts = i => {
-  const powerCtx = document.getElementById('powerChart' + i).getContext('2d')
-  var powerChart = new Chart(powerCtx, {
+  const ctx = document.getElementById('powerChart' + i).getContext('2d')
+  var chart = new Chart(ctx, {
     type: 'line',
     data: {
       datasets: [{
@@ -37,6 +28,10 @@ drawPowerCharts = i => {
       }
     }
   })
+  return {
+    'ctx': ctx,
+    'chart': chart
+  }
 }
 
 ////////// kWh Charts //////////
@@ -47,8 +42,8 @@ const kWhChartOptions = {
 }
 
 drawkWhCharts = i => {
-  const kWhCtx = document.getElementById('kWhChart' + i).getContext('2d')
-  var kWhChart = new Chart(kWhCtx, {
+  const ctx = document.getElementById('kWhChart' + i).getContext('2d')
+  var chart = new Chart(ctx, {
     type: 'doughnut',
     data: {
       datasets: [{
@@ -59,6 +54,10 @@ drawkWhCharts = i => {
     },
     options: kWhChartOptions
   })
+  return {
+    'ctx': ctx,
+    'chart': chart
+  }
 }
 
 ////////// Price Charts //////////
@@ -69,8 +68,8 @@ const priceChartOptions = {
 }
 
 drawPriceCharts = i => {
-  const priceCtx = document.getElementById('priceChart' + i).getContext('2d')
-  var priceChart = new Chart(priceCtx, {
+  const ctx = document.getElementById('priceChart' + i).getContext('2d')
+  var chart = new Chart(ctx, {
     type: 'doughnut',
     data: {
       datasets: [{
@@ -81,6 +80,10 @@ drawPriceCharts = i => {
     },
     options: priceChartOptions
   })
+  return {
+    'ctx': ctx,
+    'chart': chart
+  }
 }
 
 ////////// History Charts //////////
@@ -88,8 +91,8 @@ const historyChartLabels = new Array(historyWindow).fill().map(
   (_, i) => i).map(_ => '|')
 
 drawHistoryCharts = i => {
-  const historyCtx = document.getElementById('historyChart' + i).getContext('2d')
-  var historyChart = new Chart(historyCtx, {
+  const ctx = document.getElementById('historyChart' + i).getContext('2d')
+  var chart = new Chart(ctx, {
     type: 'bar',
     data: {
       datasets: [{
@@ -106,6 +109,28 @@ drawHistoryCharts = i => {
       }
     }
   })
+  return {
+    'ctx': ctx,
+    'chart': chart
+  }
+}
+
+////////////////////////////////////////
+drawCharts = i => {
+  var powerChart = drawPowerCharts(i)
+  var kWhChart = drawkWhCharts(i)
+  var priceChart = drawPriceCharts(i)
+  var historyChart = drawHistoryCharts(i)
+  return {
+    'powerCtx': powerChart['ctx'],
+    'powerChart': powerChart['chart'],
+    'kWhCtx': kWhChart['ctx'],
+    'kWhChart': kWhChart['chart'],
+    'priceCtx': priceChart['ctx'],
+    'priceChart': priceChart['chart'],
+    'historyCtx': historyChart['ctx'],
+    'historyChart': historyChart['chart']
+  }
 }
 
 ////////////////////////////////////////
@@ -118,34 +143,26 @@ fetchData = async () => {
   return body
 }
 
-updateChart = data => {
-  let power1 = getPower(data[0])
-  let power2 = getPower(data[1])
+updateCharts = (charts, data) => {
+  let powerChart = charts['powerChart']
+  let kWhCtx = charts['kWhCtx']
+  let kWhChart = charts['kWhChart']
+  let priceCtx = charts['priceCtx']
+  let priceChart = charts['priceChart']
 
-  powerChart1.data.labels.push('|')
-  powerChart1.data.datasets[0].data = power1
+  let power = getPower(data)
+  powerChart.data.labels.push('|')
+  powerChart.data.datasets[0].data = power
+  truncateData(powerChart)
+  powerChart.update()
 
-  powerChart2.data.labels.push('|')
-  powerChart2.data.datasets[0].data = power2
+  let kWh = getkWh(power)
+  kWhChart.data.datasets[0].data = [kWh]
+  updatekWhLabel(kWhCtx, kWh)
 
-  truncateData(powerChart1)
-  truncateData(powerChart2)
-  powerChart1.update()
-  powerChart2.update()
-
-  let kWh1 = getkWh(power1)
-  let kWh2 = getkWh(power2)
-  kWhChart1.data.datasets[0].data = [kWh1]
-  kWhChart2.data.datasets[0].data = [kWh2]
-  updatekWhLabel(kWhCtx1, kWh1)
-  updatekWhLabel(kWhCtx2, kWh2)
-
-  let price1 = getPrice(kWh1)
-  let price2 = getPrice(kWh2)
-  kWhChart1.data.datasets[0].data = [price1]
-  kWhChart2.data.datasets[0].data = [price2]
-  updatePriceLabel(priceCtx1, price1)
-  updatePriceLabel(priceCtx2, price2)
+  let price = getPrice(kWh)
+  priceChart.data.datasets[0].data = [price]
+  updatePriceLabel(priceCtx, price)
 }
 
 truncateData = chart => {
@@ -207,13 +224,3 @@ sendCommand = async(event) => {
   const query = '/?outlet=' + outlet + '&command=' + command
   await fetch(server + 'send-command' + query)
 }
-
-////////////////////////////////////////
-// fetchData().then(res => {
-//   updateChart(res)
-// })
-// this.timer = setInterval(() => {
-//   fetchData().then(res => {
-//     updateChart(res)
-//   })
-// }, intervalDelay * 1000)
