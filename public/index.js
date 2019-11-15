@@ -172,6 +172,8 @@ updateCharts = (charts, data) => {
   let price = getPrice(kWh)
   priceChart.data.datasets[0].data = [price]
   updatePriceLabel(priceCtx, price)
+
+  let history = getHistory(data)
 }
 
 truncateData = chart => {
@@ -199,19 +201,26 @@ getkWh = power => {
   return Math.round(1000 * kWh) / 1000
 }
 
-getPrice = kWh => {
-  var price = pricePerkWh * kWh
-  return Math.round(1000 * price) / 1000
-}
-
 updatekWhLabel = (ctx, kWh) => {
   ctx.font = '26px Arial'
   ctx.fillText(kWh + ' kWh', 115, 120)
 }
 
+getPrice = kWh => {
+  var price = pricePerkWh * kWh
+  return Math.round(1000 * price) / 1000
+}
+
 updatePriceLabel = (ctx, price) => {
   ctx.font = '26px Arial'
   ctx.fillText('$' + price, 140, 120)
+}
+
+getHistory = data => {
+  let timestamps = data.map(item => item.timestamp)
+  let dates = timestamps.map(ts => (new Date(ts * 1000)))
+  let simpleDates = dates.map(date => (date.getMonth() + 1) + '-' + date.getDate())
+  console.log(simpleDates)
 }
 
 sendCommand = async(event) => {
