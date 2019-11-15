@@ -1,9 +1,6 @@
 class PowerButton extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { 
-      outlet: props.outlet
-    }
   }
 
   render() {
