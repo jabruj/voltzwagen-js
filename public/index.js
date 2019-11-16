@@ -2,7 +2,7 @@ const server = 'http://localhost:3000/'
 const intervalDelay = 1
 const realTimeWindow = 20   // Number of readings for real-time chart
 const pricePerkWh = 0.145   // 14.5 cents per kWh
-const historyWindow = 14    // Number of days for history chart
+const historyWindow = 5     // Number of days for history chart
 
 ////////// Power Charts //////////
 const powerChartLabels = new Array(realTimeWindow).fill().map(
@@ -98,7 +98,7 @@ drawHistoryCharts = i => {
       datasets: [{
         label: 'Daily Power Consumption',
         backgroundColor: 'rgb(200, 200, 200)',
-        data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 1),
+        data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
       }],
       labels: historyChartLabels
     },
@@ -158,6 +158,7 @@ updateCharts = (charts, data) => {
   let kWhChart = charts['kWhChart']
   let priceCtx = charts['priceCtx']
   let priceChart = charts['priceChart']
+  let historyChart = charts['historyChart']
 
   let power = getPower(data)
   powerChart.data.labels.push('|')
@@ -174,8 +175,15 @@ updateCharts = (charts, data) => {
   updatePriceLabel(priceCtx, price)
 
   let history = getHistory(data)
-  console.log(Object.keys(history))
-  console.log(history)
+  historyChart.data.labels = Object.keys(history).map(key =>
+    new Date(key)).map(date => (date.getMonth() + 1) + '-' + date.getDate())
+  historyChart.data.datasets[0].data = new Array(historyWindow).fill(0)
+  Object.keys(history).forEach((key, i) => {
+    let power = getPower(history[key])
+    let kWh = getkWh(power)
+    historyChart.data.datasets[0].data[i] = kWh
+  })
+  historyChart.update()
 }
 
 truncateData = chart => {
@@ -221,8 +229,6 @@ updatePriceLabel = (ctx, price) => {
 getHistory = data => {
   let timestamps = data.map(item => item.timestamp)
   let dates = timestamps.map(ts => (new Date(ts * 1000))).map(date => date.toDateString())
-  // let simpleDates = dates.map(date => (date.getMonth() + 1) + '-' + date.getDate())
-  // let simpleDates = dates.map(date => date.toDateString())
   let uniqueDates = [...new Set(dates)]
 
   let history = {}
