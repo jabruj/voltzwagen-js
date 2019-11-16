@@ -174,6 +174,8 @@ updateCharts = (charts, data) => {
   updatePriceLabel(priceCtx, price)
 
   let history = getHistory(data)
+  console.log(Object.keys(history))
+  console.log(history)
 }
 
 truncateData = chart => {
@@ -218,9 +220,18 @@ updatePriceLabel = (ctx, price) => {
 
 getHistory = data => {
   let timestamps = data.map(item => item.timestamp)
-  let dates = timestamps.map(ts => (new Date(ts * 1000)))
-  let simpleDates = dates.map(date => (date.getMonth() + 1) + '-' + date.getDate())
-  console.log(simpleDates)
+  let dates = timestamps.map(ts => (new Date(ts * 1000))).map(date => date.toDateString())
+  // let simpleDates = dates.map(date => (date.getMonth() + 1) + '-' + date.getDate())
+  // let simpleDates = dates.map(date => date.toDateString())
+  let uniqueDates = [...new Set(dates)]
+
+  let history = {}
+  uniqueDates.forEach(date => {
+    history[date] = data.filter(item =>
+      new Date(item.timestamp * 1000).toDateString() === date)
+  })
+
+  return history
 }
 
 sendCommand = async(event) => {
