@@ -1,5 +1,5 @@
 const server = 'http://localhost:3000/'
-const intervalDelay = 1
+const intervalDelay = 2
 const realTimeWindow = 20   // Number of readings for real-time chart
 const pricePerkWh = 0.145   // 14.5 cents per kWh
 const historyWindow = 5     // Number of days for history chart

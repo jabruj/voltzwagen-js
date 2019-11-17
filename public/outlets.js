@@ -18,12 +18,13 @@ class Outlet extends React.Component {
     let charts = drawCharts(this.state.outlet)
     fetchData().then(res => {
       updateCharts(charts, res[this.state.outlet])
+    }).then(() => {
+      // this.state.interval = setInterval(() => {
+      //   fetchData().then(res => {
+      //     updateCharts(charts, res[this.state.outlet])
+      //   })
+      // }, intervalDelay * 1000)
     })
-    // this.state.interval = setInterval(() => {
-    //   fetchData().then(res => {
-    //     updateCharts(charts, res[this.state.outlet])
-    //   })
-    // }, intervalDelay * 1000)
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {

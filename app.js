@@ -58,7 +58,6 @@ app.get('/send-command', (req, res) => {
     message
   ).then(() => {
     outletPowerStates[req.query.outlet] = req.query.command
-    console.log(outletPowerStates)
     res.send(message)
   })
 })
