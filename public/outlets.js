@@ -61,6 +61,7 @@ class Outlet extends React.Component {
         <canvas id={'kWhChart' + i}></canvas>
         <canvas id={'priceChart' + i}></canvas>
         <canvas id={'historyChart' + i}></canvas>
+        <canvas id={'costHistoryChart' + i}></canvas>
       </div>
     )
   }

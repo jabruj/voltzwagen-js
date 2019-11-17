@@ -96,8 +96,8 @@ drawHistoryCharts = i => {
     type: 'bar',
     data: {
       datasets: [{
-        label: 'Daily Power Consumption',
-        backgroundColor: 'rgb(200, 200, 200)',
+        label: 'Daily Power Consumption (kWh)',
+        backgroundColor: 'rgba(255, 255, 0, 0.5)',
         data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
       }],
       labels: historyChartLabels
@@ -115,12 +115,38 @@ drawHistoryCharts = i => {
   }
 }
 
+drawCostHistoryCharts = i => {
+  const ctx = document.getElementById('costHistoryChart' + i).getContext('2d')
+  var chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      datasets: [{
+        label: 'Daily Cost',
+        backgroundColor: 'rgba(0, 255, 0, 0.5)',
+        data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
+      }],
+      labels: historyChartLabels
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Outlet ' + i + ' Cost History'
+      }
+    }
+  })
+  return {
+    'ctx': ctx,
+    'chart': chart
+  }
+}
+
 ////////////////////////////////////////
 drawCharts = i => {
   var powerChart = drawPowerCharts(i)
   var kWhChart = drawkWhCharts(i)
   var priceChart = drawPriceCharts(i)
   var historyChart = drawHistoryCharts(i)
+  var costHistoryChart = drawCostHistoryCharts(i)
   return {
     'powerCtx': powerChart['ctx'],
     'powerChart': powerChart['chart'],
@@ -129,7 +155,9 @@ drawCharts = i => {
     'priceCtx': priceChart['ctx'],
     'priceChart': priceChart['chart'],
     'historyCtx': historyChart['ctx'],
-    'historyChart': historyChart['chart']
+    'historyChart': historyChart['chart'],
+    'costHistoryCtx': costHistoryChart['ctx'],
+    'costHistoryChart': costHistoryChart['chart']
   }
 }
 
@@ -159,6 +187,7 @@ updateCharts = (charts, data) => {
   let priceCtx = charts['priceCtx']
   let priceChart = charts['priceChart']
   let historyChart = charts['historyChart']
+  let costHistoryChart = charts['costHistoryChart']
 
   let power = getPower(data)
   powerChart.data.labels.push('|')
@@ -177,13 +206,19 @@ updateCharts = (charts, data) => {
   let history = getHistory(data)
   historyChart.data.labels = Object.keys(history).map(key =>
     new Date(key)).map(date => (date.getMonth() + 1) + '-' + date.getDate())
+  costHistoryChart.data.labels = Object.keys(history).map(key =>
+    new Date(key)).map(date => (date.getMonth() + 1) + '-' + date.getDate())
   historyChart.data.datasets[0].data = new Array(historyWindow).fill(0)
+  costHistoryChart.data.datasets[0].data = new Array(historyWindow).fill(0)
   Object.keys(history).forEach((key, i) => {
     let power = getPower(history[key])
     let kWh = getkWh(power)
+    let price = getPrice(kWh)
     historyChart.data.datasets[0].data[i] = kWh
+    costHistoryChart.data.datasets[0].data[i] = price
   })
   historyChart.update()
+  costHistoryChart.update()
 }
 
 truncateData = chart => {
