@@ -19,16 +19,12 @@ class Outlet extends React.Component {
     fetchData().then(res => {
       updateCharts(charts, res[this.state.outlet])
     }).then(() => {
-      // this.state.interval = setInterval(() => {
-      //   fetchData().then(res => {
-      //     updateCharts(charts, res[this.state.outlet])
-      //   })
-      // }, intervalDelay * 1000)
+      this.state.interval = setInterval(() => {
+        fetchData().then(res => {
+          updateCharts(charts, res[this.state.outlet])
+        })
+      }, intervalDelay * 1000)
     })
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    drawCharts(this.state.outlet)
   }
 
   componentWillUnmount() {
@@ -61,6 +57,40 @@ class Outlet extends React.Component {
         <canvas id={'powerChart' + i}></canvas>
         <canvas id={'kWhChart' + i}></canvas>
         <canvas id={'priceChart' + i}></canvas>
+        <canvas id={'historyChart' + i}></canvas>
+        <canvas id={'costHistoryChart' + i}></canvas>
+      </div>
+    )
+  }
+}
+
+////////////////////////////////////////
+class OutletSummary extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      outlet: props.outlet
+    }
+  }
+
+  componentDidMount() {
+    let charts = drawSummaryCharts(this.state.outlet)
+    fetchData().then(res => {
+      updateSummaryCharts(charts, res[this.state.outlet])
+    // }).then(() => {
+    //   this.state.interval = setInterval(() => {
+    //     fetchData().then(res => {
+    //       updateCharts(charts, res[this.state.outlet])
+    //     })
+    //   }, intervalDelay * 1000)
+    })
+  }
+
+  render() {
+    const i = this.state.outlet
+    return (
+      <div>
+        <h3>Outlet {i}</h3>
         <canvas id={'historyChart' + i}></canvas>
         <canvas id={'costHistoryChart' + i}></canvas>
       </div>

@@ -161,6 +161,17 @@ drawCharts = i => {
   }
 }
 
+drawSummaryCharts = i => {
+  var historyChart = drawHistoryCharts(i)
+  var costHistoryChart = drawCostHistoryCharts(i)
+  return {
+    'historyCtx': historyChart['ctx'],
+    'historyChart': historyChart['chart'],
+    'costHistoryCtx': costHistoryChart['ctx'],
+    'costHistoryChart': costHistoryChart['chart']
+  }
+}
+
 ////////////////////////////////////////
 fetchData = async () => {
   const response = await fetch(server + 'query-data')
@@ -186,8 +197,6 @@ updateCharts = (charts, data) => {
   let kWhChart = charts['kWhChart']
   let priceCtx = charts['priceCtx']
   let priceChart = charts['priceChart']
-  let historyChart = charts['historyChart']
-  let costHistoryChart = charts['costHistoryChart']
 
   let power = getPower(data)
   powerChart.data.labels.push('|')
@@ -203,13 +212,23 @@ updateCharts = (charts, data) => {
   priceChart.data.datasets[0].data = [price]
   updatePriceLabel(priceCtx, price)
 
+  updateSummaryCharts(charts, data)
+}
+
+updateSummaryCharts = (charts, data) => {
+  let historyChart = charts['historyChart']
+  let costHistoryChart = charts['costHistoryChart']
+
   let history = getHistory(data)
+
   historyChart.data.labels = Object.keys(history).map(key =>
     new Date(key)).map(date => (date.getMonth() + 1) + '-' + date.getDate())
+  historyChart.data.datasets[0].data = new Array(historyWindow).fill(0)
+
   costHistoryChart.data.labels = Object.keys(history).map(key =>
     new Date(key)).map(date => (date.getMonth() + 1) + '-' + date.getDate())
-  historyChart.data.datasets[0].data = new Array(historyWindow).fill(0)
   costHistoryChart.data.datasets[0].data = new Array(historyWindow).fill(0)
+
   Object.keys(history).forEach((key, i) => {
     let power = getPower(history[key])
     let kWh = getkWh(power)
@@ -217,6 +236,7 @@ updateCharts = (charts, data) => {
     historyChart.data.datasets[0].data[i] = kWh
     costHistoryChart.data.datasets[0].data[i] = price
   })
+
   historyChart.update()
   costHistoryChart.update()
 }
