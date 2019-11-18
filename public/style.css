@@ -68,10 +68,14 @@ body {
   visibility: hidden;
 }
 
+.doughnutWrapper {
+  display: flex;
+  justify-content: center;
+}
+
 .doughnutLabel {
   font: 26px Arial;
-  padding-top: 7rem;
+  padding-top: 6.5rem;
   position: absolute;
-  width: 100%;
   z-index: 1;
 }

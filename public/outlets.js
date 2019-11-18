@@ -55,11 +55,11 @@ class Outlet extends React.Component {
           <PowerButton outlet={i} power={this.state.power} onClick={this.togglePower} />
         </div>
         <canvas id={'powerChart' + i}></canvas>
-        <div>
+        <div className="doughnutWrapper">
           <div className="doughnutLabel" id={'kWhLabel' + i}></div>
           <canvas id={'kWhChart' + i} className="doughnutChart"></canvas>
         </div>
-        <div>
+        <div className="doughnutWrapper">
           <div className="doughnutLabel" id={'priceLabel' + i}></div>
           <canvas id={'priceChart' + i} className="doughnutChart"></canvas>
         </div>
