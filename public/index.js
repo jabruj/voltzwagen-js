@@ -164,6 +164,14 @@ drawHistorySummaryChart = () => {
       title: {
         display: true,
         text: 'Daily Power Usage (kWh)'
+      },
+      scales: {
+        xAxes: [{
+          stacked: true
+        }],
+        yAxes: [{
+          stacked: true
+        }]
       }
     }
   })
@@ -196,6 +204,14 @@ drawCostHistorySummaryChart = () => {
       title: {
         display: true,
         text: 'Daily Power Costs'
+      },
+      scales: {
+        xAxes: [{
+          stacked: true
+        }],
+        yAxes: [{
+          stacked: true
+        }]
       }
     }
   })
