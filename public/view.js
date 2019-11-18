@@ -42,10 +42,7 @@ class CurrentView extends React.Component {
       )
     } else {
       return (
-        <div id="outletSummary">
-          <OutletSummary outlet='1' key='1' />
-          <OutletSummary outlet='2' key='2' />
-        </div>
+        <OutletSummary />
       )
     }
   }

@@ -140,6 +140,71 @@ drawCostHistoryCharts = i => {
   }
 }
 
+////////// History Summary Charts //////////
+drawHistorySummaryChart = () => {
+  const ctx = document.getElementById('historySummaryChart').getContext('2d')
+  var chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      datasets: [
+        {
+          label: 'Outlet 1',
+          backgroundColor: 'rgba(255, 99, 97, 1)',
+          data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
+        },
+        {
+          label: 'Outlet 2',
+          backgroundColor: 'rgba(0, 63, 92, 1)',
+          data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
+        }
+      ],
+      labels: historyChartLabels
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Daily Power Usage (kWh)'
+      }
+    }
+  })
+  return {
+    'ctx': ctx,
+    'chart': chart
+  }
+}
+
+drawCostHistorySummaryChart = () => {
+  const ctx = document.getElementById('costHistorySummaryChart').getContext('2d')
+  var chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      datasets: [
+        {
+          label: 'Outlet 1',
+          backgroundColor: 'rgba(88, 80, 141, 1)',
+          data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
+        },
+        {
+          label: 'Outlet 2',
+          backgroundColor: 'rgba(188, 80, 144, 1)',
+          data: new Array(realTimeWindow).fill().map((_, i) => i).map(_ => 0),
+        }
+      ],
+      labels: historyChartLabels
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Daily Power Costs'
+      }
+    }
+  })
+  return {
+    'ctx': ctx,
+    'chart': chart
+  }
+}
+
 ////////////////////////////////////////
 drawCharts = i => {
   var powerChart = drawPowerCharts(i)
@@ -164,13 +229,13 @@ drawCharts = i => {
 }
 
 drawSummaryCharts = i => {
-  var historyChart = drawHistoryCharts(i)
-  var costHistoryChart = drawCostHistoryCharts(i)
+  var historySummaryChart = drawHistorySummaryChart()
+  var costHistorySummaryChart = drawCostHistorySummaryChart()
   return {
-    'historyCtx': historyChart['ctx'],
-    'historyChart': historyChart['chart'],
-    'costHistoryCtx': costHistoryChart['ctx'],
-    'costHistoryChart': costHistoryChart['chart']
+    'historySummaryCtx': historySummaryChart['ctx'],
+    'historySummaryChart': historySummaryChart['chart'],
+    'costHistorySummaryCtx': costHistorySummaryChart['ctx'],
+    'costHistorySummaryChart': costHistorySummaryChart['chart']
   }
 }
 

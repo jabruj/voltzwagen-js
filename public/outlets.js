@@ -81,18 +81,16 @@ class OutletSummary extends React.Component {
 
   componentDidMount() {
     let charts = drawSummaryCharts(this.state.outlet)
-    fetchData().then(res => {
-      updateSummaryCharts(charts, res[this.state.outlet])
-    })
+    // fetchData().then(res => {
+    //   updateSummaryCharts(charts, res[this.state.outlet])
+    // })
   }
 
   render() {
-    const i = this.state.outlet
     return (
       <div>
-        <h3>Outlet {i}</h3>
-        <canvas id={'historyChart' + i}></canvas>
-        <canvas id={'costHistoryChart' + i}></canvas>
+        <canvas id={'historySummaryChart'}></canvas>
+        <canvas id={'costHistorySummaryChart'}></canvas>
       </div>
     )
   }
