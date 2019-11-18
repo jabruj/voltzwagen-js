@@ -77,12 +77,6 @@ class OutletSummary extends React.Component {
     let charts = drawSummaryCharts(this.state.outlet)
     fetchData().then(res => {
       updateSummaryCharts(charts, res[this.state.outlet])
-    // }).then(() => {
-    //   this.state.interval = setInterval(() => {
-    //     fetchData().then(res => {
-    //       updateCharts(charts, res[this.state.outlet])
-    //     })
-    //   }, intervalDelay * 1000)
     })
   }
 

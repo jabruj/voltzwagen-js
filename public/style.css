@@ -1,14 +1,23 @@
-#menu {
+body {
   text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+}
+
+#menu, #menuOutlets {
+  margin: 0.3rem 0 0.3rem 0;
+  padding: 0.3rem 0 0.3rem 0;
+}
+
+.menuItem {
+  border: solid 1px black;
+  border-radius: 10%;
+  padding: 0.3rem 0.3rem 0.3rem 0.3rem;
 }
 
 .buttonGroup {
-  /* border: solid black 1px; */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 1rem;
   margin-top: 20px;
   padding: 4px;
-  text-align: center;
   text-transform: uppercase;
 }
 
