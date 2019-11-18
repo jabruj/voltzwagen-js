@@ -264,6 +264,8 @@ updateCharts = (charts, data) => {
   let kWhLabel = charts['kWhLabel']
   let priceLabel = charts['priceLabel']
   let priceChart = charts['priceChart']
+  let historyChart = charts['historyChart']
+  let costHistoryChart = charts['costHistoryChart']
 
   let power = getPower(data)
   powerChart.data.labels.push('|')
@@ -279,7 +281,25 @@ updateCharts = (charts, data) => {
   priceChart.data.datasets[0].data = [price]
   updatePriceLabel(priceLabel, price)
 
-  updateSummaryCharts(charts, data)
+  let history = getHistory(data)
+  historyChart.data.labels = Object.keys(history).map(key =>
+    new Date(key)).map(date => (date.getMonth() + 1) + '-' + date.getDate())
+  historyChart.data.datasets[0].data = new Array(historyWindow).fill(0)
+
+  costHistoryChart.data.labels = Object.keys(history).map(key =>
+    new Date(key)).map(date => (date.getMonth() + 1) + '-' + date.getDate())
+  costHistoryChart.data.datasets[0].data = new Array(historyWindow).fill(0)
+
+  Object.keys(history).forEach((key, i) => {
+    let power = getPower(history[key])
+    let kWh = getkWh(power)
+    let price = getPrice(kWh)
+    historyChart.data.datasets[0].data[i] = kWh
+    costHistoryChart.data.datasets[0].data[i] = price
+  })
+
+  historyChart.update()
+  costHistoryChart.update()
 }
 
 updateSummaryCharts = (charts, data) => {
