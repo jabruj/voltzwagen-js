@@ -283,29 +283,37 @@ updateCharts = (charts, data) => {
 }
 
 updateSummaryCharts = (charts, data) => {
-  let historyChart = charts['historyChart']
-  let costHistoryChart = charts['costHistoryChart']
+  let historySummaryChart = charts['historySummaryChart']
+  let costHistorySummaryChart = charts['costHistorySummaryChart']
 
-  let history = getHistory(data)
+  let history1 = getHistory(data['1'])
+  let history2 = getHistory(data['2'])
 
-  historyChart.data.labels = Object.keys(history).map(key =>
+  historySummaryChart.data.labels = Object.keys(history1).map(key =>
     new Date(key)).map(date => (date.getMonth() + 1) + '-' + date.getDate())
-  historyChart.data.datasets[0].data = new Array(historyWindow).fill(0)
+  historySummaryChart.data.datasets[0].data = new Array(historyWindow).fill(0)
+  historySummaryChart.data.datasets[1].data = new Array(historyWindow).fill(0)
 
-  costHistoryChart.data.labels = Object.keys(history).map(key =>
+  costHistorySummaryChart.data.labels = Object.keys(history1).map(key =>
     new Date(key)).map(date => (date.getMonth() + 1) + '-' + date.getDate())
-  costHistoryChart.data.datasets[0].data = new Array(historyWindow).fill(0)
+  costHistorySummaryChart.data.datasets[0].data = new Array(historyWindow).fill(0)
+  costHistorySummaryChart.data.datasets[1].data = new Array(historyWindow).fill(0)
 
-  Object.keys(history).forEach((key, i) => {
-    let power = getPower(history[key])
-    let kWh = getkWh(power)
-    let price = getPrice(kWh)
-    historyChart.data.datasets[0].data[i] = kWh
-    costHistoryChart.data.datasets[0].data[i] = price
+  Object.keys(history1).forEach((key, i) => {
+    let power1 = getPower(history1[key])
+    let power2 = getPower(history2[key])
+    let kWh1 = getkWh(power1)
+    let kWh2 = getkWh(power2)
+    let price1 = getPrice(kWh1)
+    let price2 = getPrice(kWh2)
+    historySummaryChart.data.datasets[0].data[i] = kWh1
+    historySummaryChart.data.datasets[1].data[i] = kWh2
+    costHistorySummaryChart.data.datasets[0].data[i] = price1
+    costHistorySummaryChart.data.datasets[1].data[i] = price2
   })
 
-  historyChart.update()
-  costHistoryChart.update()
+  historySummaryChart.update()
+  costHistorySummaryChart.update()
 }
 
 truncateData = chart => {
