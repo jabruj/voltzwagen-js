@@ -67,3 +67,11 @@ body {
 .hiddenButton {
   visibility: hidden;
 }
+
+.doughnutLabel {
+  font: 26px Arial;
+  padding-top: 7rem;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
