@@ -9,16 +9,25 @@ class CurrentView extends React.Component {
       this.setState({
         view: 'main'
       })
+      document.getElementById('menuMain').className = 'menuItem selected'
+      document.getElementById('menuOutlet1').className = 'menuItem'
+      document.getElementById('menuOutlet2').className = 'menuItem'
     }
     document.querySelector('#menuOutlet1').onclick = () => {
       this.setState({
         view: 'outlet1'
       })
+      document.getElementById('menuMain').className = 'menuItem'
+      document.getElementById('menuOutlet1').className = 'menuItem selected'
+      document.getElementById('menuOutlet2').className = 'menuItem'
     }
     document.querySelector('#menuOutlet2').onclick = () => {
       this.setState({
         view: 'outlet2'
       })
+      document.getElementById('menuMain').className = 'menuItem'
+      document.getElementById('menuOutlet1').className = 'menuItem'
+      document.getElementById('menuOutlet2').className = 'menuItem selected'
     }
   }
 
