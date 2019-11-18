@@ -19,11 +19,11 @@ class Outlet extends React.Component {
     fetchData().then(res => {
       updateCharts(charts, res[this.state.outlet])
     }).then(() => {
-      // this.state.interval = setInterval(() => {
-      //   fetchData().then(res => {
-      //     updateCharts(charts, res[this.state.outlet])
-      //   })
-      // }, intervalDelay * 1000)
+      this.state.interval = setInterval(() => {
+        fetchData().then(res => {
+          updateCharts(charts, res[this.state.outlet])
+        })
+      }, intervalDelay * 1000)
     })
   }
 
@@ -56,11 +56,11 @@ class Outlet extends React.Component {
         </div>
         <canvas id={'powerChart' + i}></canvas>
         <div>
-          <div className="doughnutLabel" id={'kWhLabel' + i}>Outlet {i} kWh</div>
+          <div className="doughnutLabel" id={'kWhLabel' + i}></div>
           <canvas id={'kWhChart' + i} className="doughnutChart"></canvas>
         </div>
         <div>
-          <div className="doughnutLabel" id={'priceLabel' + i}>Outlet {i} $$$</div>
+          <div className="doughnutLabel" id={'priceLabel' + i}></div>
           <canvas id={'priceChart' + i} className="doughnutChart"></canvas>
         </div>
         <canvas id={'historyChart' + i}></canvas>

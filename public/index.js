@@ -152,8 +152,10 @@ drawCharts = i => {
     'powerChart': powerChart['chart'],
     'kWhCtx': kWhChart['ctx'],
     'kWhChart': kWhChart['chart'],
+    'kWhLabel': document.getElementById('kWhLabel' + i),
     'priceCtx': priceChart['ctx'],
     'priceChart': priceChart['chart'],
+    'priceLabel': document.getElementById('priceLabel' + i),
     'historyCtx': historyChart['ctx'],
     'historyChart': historyChart['chart'],
     'costHistoryCtx': costHistoryChart['ctx'],
@@ -193,9 +195,9 @@ getOutletPowerStates = async () => {
 
 updateCharts = (charts, data) => {
   let powerChart = charts['powerChart']
-  let kWhCtx = charts['kWhCtx']
   let kWhChart = charts['kWhChart']
-  let priceCtx = charts['priceCtx']
+  let kWhLabel = charts['kWhLabel']
+  let priceLabel = charts['priceLabel']
   let priceChart = charts['priceChart']
 
   let power = getPower(data)
@@ -206,11 +208,11 @@ updateCharts = (charts, data) => {
 
   let kWh = getkWh(power)
   kWhChart.data.datasets[0].data = [kWh]
-  updatekWhLabel(kWhCtx, kWh)
+  updatekWhLabel(kWhLabel, kWh)
 
   let price = getPrice(kWh)
   priceChart.data.datasets[0].data = [price]
-  updatePriceLabel(priceCtx, price)
+  updatePriceLabel(priceLabel, price)
 
   updateSummaryCharts(charts, data)
 }
@@ -266,9 +268,8 @@ getkWh = power => {
   return Math.round(1000 * kWh) / 1000
 }
 
-updatekWhLabel = (ctx, kWh) => {
-  ctx.font = '26px Arial'
-  ctx.fillText(kWh + ' kWh', 115, 120)
+updatekWhLabel = (label, kWh) => {
+  label.innerText = kWh + ' kWh'
 }
 
 getPrice = kWh => {
@@ -276,9 +277,8 @@ getPrice = kWh => {
   return Math.round(1000 * price) / 1000
 }
 
-updatePriceLabel = (ctx, price) => {
-  ctx.font = '26px Arial'
-  ctx.fillText('$' + price, 140, 120)
+updatePriceLabel = (label, price) => {
+  label.innerText = '$' + price
 }
 
 getHistory = data => {
