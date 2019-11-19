@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const app = express()
 const port = process.env.PORT || 3000
 const path = require('path')
@@ -26,6 +27,7 @@ var outletPowerStates = {
 }
 
 ////////////////////////////////////////
+app.use(cors())
 app.use('/public', express.static(__dirname + '/public'))
 
 app.get('/', (req, res) => {
