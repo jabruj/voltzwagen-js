@@ -1,5 +1,5 @@
 // const server = 'http://localhost:3000/'
-const server = "http://voltzwagen-env-1.hfddvpvkmu.us-east-1.elasticbeanstalk.com/"
+const server = 'http://voltzwagen.us-east-1.elasticbeanstalk.com/'
 const intervalDelay = 2
 const realTimeWindow = 20   // Number of readings for real-time chart
 const pricePerkWh = 0.145   // 14.5 cents per kWh
