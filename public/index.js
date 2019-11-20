@@ -338,14 +338,16 @@ updateSummaryCharts = (charts, data) => {
 
   Object.keys(history1).forEach((key, i) => {
     let power1 = getPower(history1[key])
-    let power2 = getPower(history2[key])
     let kWh1 = getkWh(power1)
-    let kWh2 = getkWh(power2)
     let price1 = getPrice(kWh1)
-    let price2 = getPrice(kWh2)
     historySummaryChart.data.datasets[0].data[i] = kWh1
-    historySummaryChart.data.datasets[1].data[i] = kWh2
     costHistorySummaryChart.data.datasets[0].data[i] = price1
+  })
+  Object.keys(history2).forEach((key, i) => {
+    let power2 = getPower(history2[key])
+    let kWh2 = getkWh(power2)
+    let price2 = getPrice(kWh2)
+    historySummaryChart.data.datasets[1].data[i] = kWh2
     costHistorySummaryChart.data.datasets[1].data[i] = price2
   })
 
