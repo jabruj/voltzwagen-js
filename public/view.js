@@ -9,40 +9,37 @@ class CurrentView extends React.Component {
       this.setState({
         view: 'main'
       })
+      this.resetMenuItems()
       document.getElementById('menuMain').className = 'menuItem selected'
-      document.getElementById('menuOutlet1').className = 'menuItem'
-      document.getElementById('menuOutlet2').className = 'menuItem'
     }
-    document.querySelector('#menuOutlet1').onclick = () => {
-      this.setState({
-        view: 'outlet1'
-      })
-      document.getElementById('menuMain').className = 'menuItem'
-      document.getElementById('menuOutlet1').className = 'menuItem selected'
-      document.getElementById('menuOutlet2').className = 'menuItem'
-    }
-    document.querySelector('#menuOutlet2').onclick = () => {
-      this.setState({
-        view: 'outlet2'
-      })
-      document.getElementById('menuMain').className = 'menuItem'
-      document.getElementById('menuOutlet1').className = 'menuItem'
-      document.getElementById('menuOutlet2').className = 'menuItem selected'
-    }
+
+    Array.from(document.getElementsByClassName('menuItem')).forEach(menuItem => {
+      if (menuItem.id.includes('Outlet')) {
+        menuItem.onclick = () => {
+          this.setState({
+            view: parseInt(menuItem.id[menuItem.id.length - 1])
+          })
+          this.resetMenuItems()
+          menuItem.className = 'menuItem selected'
+        }
+      }
+    })
+  }
+
+  resetMenuItems = () => {
+    Array.from(document.getElementsByClassName('menuItem')).forEach(menuItem => {
+      menuItem.className = 'menuItem'
+    })
   }
 
   render() {
-    if (this.state.view === 'outlet1') {
+    if (this.state.view === 'main') {
       return (
-        <Outlet outlet='1' key='1' />
-      )
-    } else if (this.state.view === 'outlet2') {
-      return (
-        <Outlet outlet='2' key='2' />
+        <OutletSummary />
       )
     } else {
       return (
-        <OutletSummary />
+        <Outlet outlet={this.state.view} key={this.state.view} />
       )
     }
   }

@@ -23,7 +23,8 @@ const dbParams = {
 
 var outletPowerStates = {
   '1': '1',
-  '2': '1'
+  '2': '1',
+  '3': '1'
 }
 
 ////////////////////////////////////////
@@ -40,8 +41,9 @@ app.get('/query-data', (req, res) => {
       console.log(err)
     } else {
       var body = {}
-      body['1'] = formatOutletData('1', data.Items)
-      body['2'] = formatOutletData('2', data.Items)
+      Object.keys(outletPowerStates).forEach(key => {
+        body[key] = formatOutletData(key, data.Items)
+      })
       res.send(body)
     }
   })
