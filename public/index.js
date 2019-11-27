@@ -367,10 +367,7 @@ truncateData = chart => {
 }
 
 getPower = outletData => {
-  let current = outletData.map(item => item.current)
-  let voltage = outletData.map(item => item.voltage)
-  let temp = outletData.map(item => item.temperature)
-  let power = current.map((n, i) => n * voltage[i])
+  let power = outletData.map(item => item.power)
   return power
 }
 
